@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        a {
+            color: #4a90e2;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .create-note {
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .create-note a {
+            background-color: #4a90e2;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        .create-note a:hover {
+            background-color: #357abd;
+        }
+
+        ul {
+            list-style-type: none;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+
+        li {
+            background-color: #fff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li p {
+            font-size: 1em;
+            color: #555;
+            margin: 5px 0;
+        }
+
+        .note-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .note-actions {
+            font-size: 0.9em;
+            color: #4a90e2;
+        }
+
+        .note-actions a {
+            margin-right: 10px;
+        }
+
+        .pagination {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .step-links {
+            font-size: 1em;
+            color: #333;
+        }
+
+        .step-links a {
+            padding: 8px 12px;
+            color: #4a90e2;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 5px;
+            transition: background-color 0.3s;
+        }
+
+        .step-links a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .step-links .current {
+            padding: 8px 12px;
+            background-color: #4a90e2;
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Notes</h1>
+    <div class="create-note">
+        <a href="{% url 'note_create' %}">Create a new note</a>
+    </div>
+    <ul>
+        {% for note in page_obj %}
+            <li>
+                <div>
+                    <p class="note-title">{{ note.title }}</p>
+                    <p>{{ note.body|slice:":100" }}...</p>
+                </div>
+                <div class="note-actions">
+                    <a href="{% url 'note_update' note.pk %}">Edit</a> |
+                    <a href="{% url 'note_delete' note.pk %}">Delete</a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</body>
+</html>
