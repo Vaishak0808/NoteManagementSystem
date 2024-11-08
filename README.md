@@ -3,7 +3,7 @@
 This repository contains a Django-based notes Management System with JWT authentication. The application provides features for user authentication (sign up, login, logout), and CRUD operations for notes.
 
 ### Features
-- User Authentication (Sign Up, Login, Logout)
+- User Authentication (Sign Up, Login)
 - JWT Authentication for secure access
 - Create, Read, Update, and Delete (CRUD) operations for notes
 - Pagination for listing notes
