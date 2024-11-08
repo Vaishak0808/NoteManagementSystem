@@ -32,7 +32,8 @@ class userLogin(APIView):
             
             # return Response({"success": True, 'details': 'Success', 'access_token': access_token, 'userdetails': user_details}, status=status.HTTP_200_OK)
         else:
-            return Response({"success": False, 'details': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+            return render(request, 'registration/login.html', {'messages':['Invalid credentials.']})
+            # return Response({"success": False, 'details': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class signUp(APIView):
@@ -45,7 +46,8 @@ class signUp(APIView):
         password = request.data.get('password')
 
         if User.objects.filter(email=email).exists():
-            return Response({"success": False, "details": "Email is already registered."}, status=status.HTTP_400_BAD_REQUEST)
+            return render(request, 'registration/signup.html', {'messages':['Email is already registered.']})
+            # return Response({"success": False, "details": "Email is already registered."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user = User.objects.create_user(
@@ -67,12 +69,22 @@ class signUp(APIView):
                 'last_name': user.last_name
             }
 
-            return Response({
+            context = {
                 "success": True,
-                "details": "User created successfully.",
+                "messages": ["User created successfully."],
                 "access_token": access_token,
                 "userdetails": user_details
-            }, status=status.HTTP_201_CREATED)
+            }
+
+            return render(request, 'registration/signup.html', context=context)
+
+            # return Response({
+            #     "success": True,
+            #     "details": "User created successfully.",
+            #     "access_token": access_token,
+            #     "userdetails": user_details
+            # }, status=status.HTTP_201_CREATED)
 
         except Exception as e:
-            return Response({"success": False, "details": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return render(request, 'registration/signup.html', {'messages':e})
+            # return Response({"success": False, "details": str(e)}, status=status.HTTP_400_BAD_REQUEST)

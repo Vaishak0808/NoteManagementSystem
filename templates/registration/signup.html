@@ -117,6 +117,10 @@
                 {% endfor %}
             </ul>
         {% endif %}
+        <ul><li><a href="{% url 'login' %}">Login here</a></li></ul>
+        <div class="signup-link"></div>
+            <p>Already created your account? <a href="{% url 'login' %}">Login here</a></p>
+        </div>
     </form>
 </body>
 </html>
